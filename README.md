@@ -1,6 +1,6 @@
 # Secret Encrypter
 
-**Live Demo:** [https://suyog-jadhav.github.io/Secret-Encrypter/](https://suyog-jadhav.github.io/Secret-Encrypter/)
+**Live Demo:** [https://danishsayyad.github.io/Secret-Encrypter/](https://danishsayyad.github.io/Secret-Encrypter/)
 
 A privacy-focused, client-side text encryption and decryption web application. Everything happens locally in your browser — no data ever leaves your device.
 
@@ -153,10 +153,6 @@ Secret Encrypter is committed to your privacy:
 
 ---
 
-## Contributing
-
-Contributions, issues, and feature requests are welcome!
-Check the [issues page](https://github.com/suyog-jadhav/Secret-Encrypter/issues).
 
 ## Developer
 
