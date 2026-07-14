@@ -1,125 +1,171 @@
 # Secret Encrypter
 
-**Live Demo:** [https://danishsayyad.github.io/Secret-Encrypter/](https://danishsayyad.github.io/Secret-Encrypter/)
+**Live Demo:** [https://suyog-jadhav.github.io/Secret-Encrypter/](https://suyog-jadhav.github.io/Secret-Encrypter/)
 
-A privacy-focused, client-side text encryption and decryption web application. Secret Encrypter allows you to securely encrypt and decrypt text using custom keys, with all data stored locally on your device.
+A privacy-focused, client-side text encryption and decryption web application. Everything happens locally in your browser — no data ever leaves your device.
+
+---
+
+## Features
+
+### 🔐 Two Encryption Algorithms
+
+| Algorithm | Strength | Description |
+|---|---|---|
+| **XOR** | Basic | XOR cipher + Base64 encoding. Fast, suitable for casual use |
+| **AES-256-GCM** | Secure | Industry-standard authenticated encryption via Web Crypto API. Uses PBKDF2 key derivation with a random salt and IV per message |
+
+Switch between algorithms using the pill selector above the panels. The active algorithm is shown as a badge in each panel header.
+
+> ⚠️ Text encrypted with XOR cannot be decrypted with AES-GCM and vice versa.
+
+### ↔️ Side-by-Side Panels
+
+Encrypt and Decrypt panels are always visible at the same time — no mode toggling needed.
+
+### 📁 File Upload
+
+Upload any `.txt` file directly into the Encrypt panel to encrypt file contents in one click.
+
+### 💾 Stored Texts
+
+Save encrypted outputs for later reference. Accessible via the **Texts** button in the navbar, which opens a slide-in drawer with your saved secrets.
+
+### 📤 Export Secrets
+
+Download all stored encrypted texts as a formatted `.txt` file using the **Export** button in the navbar.
+
+### 🔒 Authentication
+
+- Master password hashed with **SHA-256** via the Web Crypto API
+- Stored only in browser `localStorage` — never transmitted
+- First-time setup with password confirmation
+- Live validation hints (character counter, match indicator) as you type
+- Password reset clears all stored data
+
+---
 
 ## Screenshots
 
 ### Login Page
-![Login Page](screenshots/login.png)
+![Login Page](assets/Screenshots/login.png)
 
-**First Time Setup:**
-1. Visit the application
-2. Create a master password (will be hashed and stored locally)
-3. Confirm your password
-4. Access the main interface
+### Main Interface (Dual Panel)
+![Encryption Interface](assets/Screenshots/encrypt.png)
 
-### Encryption Interface
-![Encryption Interface](screenshots/encrypt.png)
+### Stored Texts Drawer
+![Stored Texts](assets/Screenshots/texts.png)
 
-**Encrypting Text:**
-1. Enter the text you want to encrypt
-2. Provide an encryption key (minimum 4 characters)
-3. Click "Encrypt"
-4. Save the encrypted text with a title for later access
+---
 
-**Decrypting Text:**
-1. Toggle to "Decrypt" mode
-2. Paste your encrypted text
-3. Enter the same key used for encryption
-4. Click "Decrypt" to reveal the original text
+## How to Use
 
-### Stored Texts
-![Stored Texts](screenshots/texts.png)
+### Encrypting Text
+1. Choose an algorithm (**XOR** or **AES-GCM**) from the selector
+2. Enter an encryption key (minimum 4 characters — **remember this key!**)
+3. Type or paste text, or upload a `.txt` file
+4. Click **Encrypt**
+5. Copy or **Save to Texts** for later
 
-**Managing Stored Texts:**
-1. Navigate to the "Texts" tab
-2. View all your saved encrypted texts
-3. Click "View" to see any stored text
-4. Use "Delete" to remove individual texts
-5. Use "Wipe All" to clear entire storage
+### Decrypting Text
+1. Select the **same algorithm** used during encryption
+2. Paste the encrypted text into the Decrypt panel
+3. Enter the **same key** used to encrypt
+4. Click **Decrypt**
 
-## Features
+### Managing Stored Texts
+- Click **Texts** in the navbar to open the drawer
+- Click any entry to view the full encrypted text
+- Delete individual entries or **Wipe All**
+- Click **Export** in the navbar to download all secrets as a `.txt` file
 
-### Security & Privacy
-- **100% Client-Side Processing**: All encryption, decryption, and storage happens in your browser
-- **No Server Communication**: Your data never leaves your device
-- **SHA-256 Password Hashing**: Secure password storage using industry-standard hashing
-- **Key-Based Encryption**: Each text requires a unique encryption key
-- **Local Storage Only**: All data stored in browser's local storage
+---
 
-### Authentication System
-- First-time password setup with confirmation
-- Secure login for returning users
-- Password visibility toggle for easy verification
-- Reset password functionality (clears all stored data)
-- Automatic session management
+## Security Notes
 
-### Encryption & Decryption
-- Simple toggle between Encrypt and Decrypt modes
-- Custom encryption key support (minimum 4 characters)
-- XOR cipher with Base64 encoding
-- Real-time text processing
-- Clear input/output fields
+| Topic | Detail |
+|---|---|
+| **Master password** | Hashed with SHA-256. There is no recovery mechanism — do not forget it |
+| **Encryption keys** | Keys are **never stored**. You must remember the key used for each text |
+| **AES-GCM** | Authenticated encryption — decryption will fail cleanly if the key is wrong or data is tampered with |
+| **XOR cipher** | Suitable for casual obfuscation, not for sensitive data |
+| **Local storage** | All data is in browser local storage. Clearing browser data deletes everything |
+| **No network** | Works fully offline after initial load. Zero server communication |
 
-### Text Storage Management
-- Save encrypted texts with custom titles
-- View stored texts with inline viewer
-- Individual delete functionality for each text
-- Wipe All feature to clear entire storage
-- Confirmation prompts for destructive actions
+---
 
 ## Technology Stack
 
-- **HTML5**: Semantic markup and structure
-- **CSS3**: Modern styling with animations and transitions
-- **Vanilla JavaScript**: No frameworks, pure DOM manipulation
-- **Web Crypto API**: SHA-256 password hashing
-- **Local Storage API**: Client-side data persistence
+| Layer | Technology |
+|---|---|
+| Structure | HTML5 (semantic) |
+| Styling | Vanilla CSS3 — Inter font, dark theme, glassmorphism |
+| Logic | Vanilla JavaScript (ES2020+) |
+| Encryption | Web Crypto API — AES-256-GCM, PBKDF2, SHA-256 |
+| Storage | Browser `localStorage` |
+| Build | None — zero build step, open the file and it works |
 
-## Security Considerations
+---
 
-- **Master Password**: Your master password is hashed using SHA-256 before storage. However, it's crucial to remember it as there's no recovery mechanism.
-- **Encryption Keys**: Keys are NOT stored with encrypted texts. You must remember the key used for each encryption.
-- **Local Storage**: Data persists in browser local storage. Clearing browser data will delete all stored information.
-- **Encryption Strength**: This application uses XOR cipher, suitable for casual privacy but not for highly sensitive data requiring military-grade encryption.
+## Browser Compatibility
+
+Requires Web Crypto API support (available in all modern browsers):
+
+- Chrome / Edge 60+
+- Firefox 57+
+- Safari 11+
+- Opera 47+
+
+---
+
+## Project Structure
+
+```
+Secret-Encrypter/
+├── index.html              # Main app — dual-panel encrypt/decrypt
+├── assets/
+│   ├── icon.svg
+│   ├── icon-small.svg      # Favicon
+│   └── Screenshots/
+├── pages/
+│   ├── login.html          # Auth page (setup + login)
+│   └── about.html          # About page
+├── script/
+│   ├── app.js              # Cipher logic, file upload, export, drawer
+│   └── auth.js             # Auth class, session guard, live validation
+└── style/
+    ├── main.css            # Home page styles
+    ├── auth.css            # Login page styles
+    └── about.css           # About page styles
+```
+
+---
 
 ## Privacy Policy
 
 Secret Encrypter is committed to your privacy:
 
-- Does not collect any personal information
-- Does not transmit any data to external servers
-- Does not use cookies or tracking
-- Does not require internet connection after initial load
+- Does **not** collect any personal information
+- Does **not** transmit any data to external servers
+- Does **not** use cookies or tracking
+- Does **not** require an internet connection after initial load
 - All processing happens entirely in your browser
-
-## Browser Compatibility
-
-- Chrome/Edge 60+
-- Firefox 57+
-- Safari 11+
-- Opera 47+
-
-## Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/DanishSayyad/Secret-Encrypter/issues).
-
-## Developer
-
-**Danish Sayyad**
-
-## License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## Acknowledgments
-
-- Built with vanilla JavaScript for maximum compatibility
-- Designed with privacy and security as top priorities
-- Inspired by the need for simple, trustworthy encryption tools
 
 ---
 
-**Remember**: This application is designed for casual privacy needs. For highly sensitive information, consider using enterprise-grade encryption solutions.
+## Contributing
+
+Contributions, issues, and feature requests are welcome!
+Check the [issues page](https://github.com/suyog-jadhav/Secret-Encrypter/issues).
+
+## Developer
+
+**Danish Sayyad** — [GitHub](https://github.com/DanishSayyad)
+
+## License
+
+MIT License — open source and free to use.
+
+---
+
+> **Remember:** For highly sensitive information, use enterprise-grade encryption solutions with proper key management.
