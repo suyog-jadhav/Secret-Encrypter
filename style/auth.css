@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 /* Auth page styling (login.html) - Green Theme */
 
 * {
@@ -20,7 +22,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #0a1f1a 0%, #0f3d2f 100%);
     color: var(--text-primary);
     min-height: 100vh;
@@ -230,3 +232,33 @@ h1 {
         font-size: 24px;
     }
 }
+
+/* ============================================================
+   FIELD-LEVEL LIVE HINTS
+   ============================================================ */
+.field-hint {
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    min-height: 18px;
+    transition: color 0.2s ease;
+    padding-left: 2px;
+    letter-spacing: 0.1px;
+}
+
+.field-hint--error {
+    color: var(--error-color);
+}
+
+.field-hint--success {
+    color: #00cc6e;
+}
+
+/* Disabled submit button (during async verify) */
+.btn-primary:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+

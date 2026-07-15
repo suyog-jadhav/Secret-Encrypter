@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Secret Encrypter</title>
+    <meta name="description" content="Encrypt and decrypt text securely in your browser. No data leaves your device.">
     <link rel="icon" type="image/svg+xml" href="assets/icon-small.svg">
     <link rel="stylesheet" href="style/main.css">
 </head>
@@ -11,16 +12,96 @@
     <nav class="navbar">
         <div class="nav-content">
             <div class="nav-brand">
-                <svg width="40" height="40" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="38" height="38" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="30" cy="30" r="28" stroke="#00ff88" stroke-width="3"/>
                     <path d="M30 15 L30 25 M30 35 L30 45 M20 30 L25 30 M35 30 L40 30" stroke="#00ff88" stroke-width="3" stroke-linecap="round"/>
                     <circle cx="30" cy="30" r="5" fill="#00ff88"/>
                 </svg>
                 <span>Secret Encrypter</span>
             </div>
-            <button class="btn-logout" id="logoutBtn">Logout</button>
+            <div class="nav-actions">
+                <button class="btn-nav" id="textsNavBtn" title="View stored encrypted texts">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                    Texts
+                </button>
+                <button class="btn-nav btn-export-nav" id="exportBtn" title="Export all secrets as .txt">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Export
+                </button>
+                <button class="btn-logout" id="logoutBtn">Logout</button>
+            </div>
         </div>
     </nav>
+
+    <!-- Texts Drawer (slides in from the right) -->
+    <div class="texts-drawer" id="textsDrawer" aria-hidden="true">
+        <div class="drawer-header">
+            <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Stored Texts
+            </h3>
+            <div class="drawer-actions">
+                <button class="btn-wipe" id="wipeAllBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Wipe All
+                </button>
+                <button class="btn-close-drawer" id="closeDrawer" aria-label="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="drawer-body">
+            <!-- Inline text viewer -->
+            <div id="textViewer" class="text-viewer" style="display:none;">
+                <div class="viewer-header">
+                    <h4>Encrypted Text</h4>
+                    <button class="btn-close-viewer" id="closeViewer">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                        Back
+                    </button>
+                </div>
+                <div class="viewer-body">
+                    <code id="viewedText"></code>
+                </div>
+                <div class="viewer-footer">
+                    <button class="btn-copy-viewer" id="copyViewerText">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+            </div>
+            <!-- Stored texts list -->
+            <div class="stored-texts-container" id="storedTextsContainer">
+                <p class="no-texts-message">No encrypted texts stored yet</p>
+            </div>
+        </div>
+    </div>
+    <!-- Click-outside overlay -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
 
     <div class="container">
         <div class="welcome-section">
@@ -28,101 +109,117 @@
             <p class="subtitle">Your secure encryption and decryption tool</p>
         </div>
 
-        <div class="mode-toggle">
-            <button class="toggle-btn active" data-mode="encrypt">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Algorithm Selector -->
+        <div class="algo-selector">
+            <span class="algo-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
-                Encrypt
-            </button>
-            <button class="toggle-btn" data-mode="decrypt">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                    <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
-                </svg>
-                Decrypt
-            </button>
-            <button class="toggle-btn" data-mode="texts">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="16" y1="13" x2="8" y2="13"></line>
-                    <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
-                </svg>
-                Texts
-            </button>
+                Algorithm:
+            </span>
+            <div class="algo-pills" role="group" aria-label="Choose encryption algorithm">
+                <button class="algo-pill active" data-algo="xor" id="algoXor">
+                    XOR
+                    <span class="algo-badge algo-badge--weak">Basic</span>
+                </button>
+                <button class="algo-pill" data-algo="aesgcm" id="algoAes">
+                    AES-GCM
+                    <span class="algo-badge algo-badge--strong">Secure</span>
+                </button>
+            </div>
         </div>
 
-        <div class="main-content">
-            <div class="card" id="operationCard">
+        <!-- Side-by-side Encrypt / Decrypt panels -->
+        <div class="dual-panel">
+
+            <!-- ===== ENCRYPT PANEL ===== -->
+            <div class="card panel-card" id="encryptCard">
                 <div class="card-header">
-                    <h2 id="operationTitle">Encrypt Text</h2>
-                    <button class="btn-wipe" id="wipeAllBtn" style="display: none;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                    <div class="panel-label encrypt-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
-                        Wipe All!
-                    </button>
-                </div>
-                <div class="card-body">
-                    <div class="input-group" id="keyInputGroup">
-                        <label for="encryptionKey">Encryption Key</label>
-                        <input type="password" id="encryptionKey" placeholder="Enter your encryption key" autocomplete="off">
-                        <button type="button" class="toggle-visibility" id="toggleKeyVisibility">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                <circle cx="12" cy="12" r="3"></circle>
-                            </svg>
-                        </button>
+                        <h2>Encrypt</h2>
                     </div>
-                    <textarea id="operationInput" placeholder="Enter text to encrypt..." rows="6"></textarea>
-                    <button class="btn-primary" id="operationBtn">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <span class="algo-active-badge" id="encAlgoBadge">XOR</span>
+                </div>
+
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="encryptionKey">Encryption Key</label>
+                        <div class="input-wrap">
+                            <input type="password" id="encryptionKey" placeholder="Min. 4 characters" autocomplete="off">
+                            <button type="button" class="toggle-visibility" id="toggleKeyVisibility" aria-label="Toggle key visibility">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- File upload -->
+                    <div class="file-upload-group">
+                        <label for="fileUpload" class="file-upload-label">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="17 8 12 3 7 8"></polyline>
+                                <line x1="12" y1="3" x2="12" y2="15"></line>
+                            </svg>
+                            Upload .txt
+                        </label>
+                        <input type="file" id="fileUpload" accept=".txt" style="display:none;">
+                        <span class="file-name-badge" id="fileName">No file chosen</span>
+                    </div>
+
+                    <textarea id="encryptInput" placeholder="Enter or paste text to encrypt..." rows="6"></textarea>
+                    <button class="btn-primary btn-encrypt" id="encryptBtn">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
                         Encrypt
                     </button>
-                    <div class="output" id="operationOutput"></div>
+                    <div class="output" id="encryptOutput"></div>
+                </div>
+            </div>
 
-                    <!-- Texts storage view -->
-                    <div id="textsView" style="display: none;">
-                        <!-- Text viewer -->
-                        <div id="textViewer" class="text-viewer" style="display: none;">
-                            <div class="viewer-header">
-                                <h3>Viewing Encrypted Text</h3>
-                                <button class="btn-close-viewer" id="closeViewer">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                    Close
-                                </button>
-                            </div>
-                            <div class="viewer-body">
-                                <code id="viewedText"></code>
-                            </div>
-                            <div class="viewer-footer">
-                                <button class="btn-copy-viewer" id="copyViewerText">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                    </svg>
-                                    Copy
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Stored texts list -->
-                        <div class="stored-texts-container" id="storedTextsContainer">
-                            <p class="no-texts-message">No encrypted texts stored yet</p>
+            <!-- ===== DECRYPT PANEL ===== -->
+            <div class="card panel-card" id="decryptCard">
+                <div class="card-header">
+                    <div class="panel-label decrypt-label">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                        </svg>
+                        <h2>Decrypt</h2>
+                    </div>
+                    <span class="algo-active-badge" id="decAlgoBadge">XOR</span>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="decryptionKey">Decryption Key</label>
+                        <div class="input-wrap">
+                            <input type="password" id="decryptionKey" placeholder="Same key used to encrypt" autocomplete="off">
+                            <button type="button" class="toggle-visibility" id="toggleDecKeyVisibility" aria-label="Toggle key visibility">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
                         </div>
                     </div>
+                    <textarea id="decryptInput" placeholder="Paste encrypted text here..." rows="6" style="margin-top: 44px;"></textarea>
+                    <button class="btn-primary btn-decrypt" id="decryptBtn">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                        </svg>
+                        Decrypt
+                    </button>
+                    <div class="output" id="decryptOutput"></div>
                 </div>
             </div>
         </div>
@@ -130,15 +227,15 @@
         <div class="info-section">
             <div class="info-card">
                 <h3>Secure Storage</h3>
-                <p>Your password is hashed and stored securely in the browser</p>
+                <p>Your password is hashed with SHA-256 and stored locally in the browser</p>
             </div>
             <div class="info-card">
-                <h3>Fast & Easy</h3>
-                <p>Encrypt and decrypt text with just a few clicks</p>
+                <h3>Fast &amp; Easy</h3>
+                <p>Encrypt and decrypt text side-by-side with just a few clicks</p>
             </div>
             <div class="info-card">
                 <h3>Privacy First</h3>
-                <p>Everything happens locally in your browser</p>
+                <p>Everything happens locally — no data ever leaves your device</p>
             </div>
         </div>
 

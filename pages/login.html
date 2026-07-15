@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Secret Encrypter</title>
+    <meta name="description" content="Secure login for Secret Encrypter — your private encryption tool.">
     <link rel="icon" type="image/svg+xml" href="../assets/icon-small.svg">
     <link rel="stylesheet" href="../style/auth.css">
 </head>
@@ -19,45 +20,51 @@
             </div>
             <h1>Secret Encrypter</h1>
             <p class="subtitle" id="loginMessage">Set up your password to continue</p>
-            
-            <form id="loginForm">
+
+            <form id="loginForm" novalidate>
                 <div class="input-group">
                     <label for="password">Password</label>
                     <div class="input-with-icon">
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="off">
-                        <button type="button" class="toggle-password" id="togglePassword">
+                        <input type="password" id="password" name="password"
+                               placeholder="Enter your password" required autocomplete="off">
+                        <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password visibility">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
                             </svg>
                         </button>
                     </div>
+                    <!-- Live hint injected by JS -->
+                    <div class="field-hint" id="passwordHint"></div>
                 </div>
-                
+
                 <div class="input-group" id="confirmPasswordGroup" style="display: none;">
                     <label for="confirmPassword">Confirm Password</label>
                     <div class="input-with-icon">
-                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" autocomplete="off">
-                        <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                               placeholder="Re-enter your password" autocomplete="off">
+                        <button type="button" class="toggle-password" id="toggleConfirmPassword" aria-label="Toggle confirm password visibility">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                                 <circle cx="12" cy="12" r="3"></circle>
                             </svg>
                         </button>
                     </div>
+                    <!-- Live match hint injected by JS -->
+                    <div class="field-hint" id="confirmHint"></div>
                 </div>
-                
+
                 <button type="submit" class="btn-primary" id="submitBtn">Set Password</button>
             </form>
-            
+
             <div class="error-message" id="errorMessage"></div>
-            
+
             <div class="reset-section" id="resetSection" style="display: none;">
-                <button type="button" class="btn-reset" id="resetBtn">Forgot Password? Reset</button>
+                <button type="button" class="btn-reset" id="resetBtn">Forgot password? Reset everything</button>
             </div>
         </div>
     </div>
-    
+
     <script src="../script/auth.js"></script>
 </body>
 </html>
