@@ -19,19 +19,19 @@ Switch between algorithms using the pill selector above the panels. The active a
 
 > ⚠️ Text encrypted with XOR cannot be decrypted with AES-GCM and vice versa.
 
-### ↔️ Side-by-Side Panels
+###  Side-by-Side Panels
 
 Encrypt and Decrypt panels are always visible at the same time — no mode toggling needed.
 
-### 📁 File Upload
+###  File Upload
 
 Upload any `.txt` file directly into the Encrypt panel to encrypt file contents in one click.
 
-### 💾 Stored Texts
+###  Stored Texts
 
 Save encrypted outputs for later reference. Accessible via the **Texts** button in the navbar, which opens a slide-in drawer with your saved secrets.
 
-### 📤 Export Secrets
+###  Export Secrets
 
 Download all stored encrypted texts as a formatted `.txt` file using the **Export** button in the navbar.
 
